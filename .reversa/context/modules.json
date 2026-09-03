@@ -1,0 +1,489 @@
+{
+  "generated_at": "2026-05-02T12:35:00Z",
+  "modules": [
+    {
+      "name": "admin",
+      "path": "src/app/admin",
+      "purpose": "Painel de controle central para gestão de usuários, financeiro e configurações",
+      "primary_files": [
+        "src/app/admin/layout.tsx",
+        "src/app/admin/usuarios/page.tsx",
+        "src/app/admin/financeiro/page.tsx",
+        "src/components/admin/sidebar.tsx"
+      ],
+      "functions": [
+        {
+          "name": "AdminUsersPage.fetchUsers",
+          "file": "src/app/admin/usuarios/page.tsx",
+          "params": ["page: number"],
+          "returns": "Promise<void>",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "POST (SMS API)",
+          "file": "src/app/api/admin/users/[id]/sms/route.ts",
+          "params": ["id: string", "message: string"],
+          "returns": "NextResponse",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "User (Admin View)",
+          "fields": [
+            { "name": "id", "type": "string", "required": true },
+            { "name": "name", "type": "string", "required": true },
+            { "name": "email", "type": "string", "required": true },
+            { "name": "role", "type": "Role", "required": true },
+            { "name": "status", "type": "UserStatus", "required": true }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Somente ADMIN, SUPER_ADMIN ou SUPPORT podem gerenciar usuários",
+          "location": "src/app/api/admin/users/[id]/sms/route.ts:17",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Mensagens SMS são limitadas a 160 caracteres",
+          "location": "src/app/api/admin/users/[id]/sms/route.ts:28",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Módulo financeiro do admin usa dados simulados para prototipação",
+          "location": "src/app/admin/financeiro/page.tsx:22",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["prisma", "next-auth", "sms-service", "push-service"],
+      "algorithms": [
+        {
+          "name": "Filtragem e Ordenação Combinada",
+          "description": "Uso de useMemo para filtrar clientes por status, tipo, plano e termo de busca em tempo real",
+          "confidence": "confirmed"
+        }
+      ],
+      "complexity": "medium"
+    },
+    {
+      "name": "auth",
+      "path": "src/app/(public)",
+      "purpose": "Identidade, segurança e ciclo de vida de acesso",
+      "primary_files": [
+        "src/auth.ts",
+        "src/auth.config.ts",
+        "src/app/(public)/entrar/page.tsx",
+        "src/components/forms/professional-registration.tsx",
+        "src/app/api/register/route.ts"
+      ],
+      "functions": [
+        {
+          "name": "authorize",
+          "file": "src/auth.ts",
+          "params": ["credentials"],
+          "returns": "Promise<User | null>",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "POST (Register API)",
+          "file": "src/app/api/register/route.ts",
+          "params": ["name", "email", "password", "type", "planName", "data"],
+          "returns": "NextResponse",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "RegistrationData",
+          "fields": [
+            { "name": "email", "type": "string", "required": true },
+            { "name": "password", "type": "string", "required": true },
+            { "name": "planName", "type": "string", "required": true },
+            { "name": "type", "type": "string", "required": true }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Somente usuários ACTIVE ou PENDING podem logar",
+          "location": "src/auth.ts:41",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Limites de serviços por plano (13, 25, 40, 100)",
+          "location": "src/components/forms/professional-registration.tsx:35",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["bcryptjs", "next-auth", "prisma"],
+      "algorithms": [
+        {
+          "name": "Password Hashing",
+          "description": "Uso de bcryptjs para hashing e comparação de senhas",
+          "confidence": "confirmed"
+        }
+      ],
+      "complexity": "medium"
+    },
+    {
+      "name": "buscar-finder",
+      "path": "src/app/buscar",
+      "purpose": "Motor de busca geoespacial de profissionais e serviços",
+      "primary_files": [
+        "src/app/buscar/page.tsx",
+        "src/app/api/search/professionals/route.ts",
+        "src/hooks/use-professional-search.ts",
+        "src/components/search/professional-search.tsx"
+      ],
+      "functions": [
+        {
+          "name": "calculateDistance",
+          "file": "src/app/api/search/professionals/route.ts",
+          "params": ["lat1", "lon1", "lat2", "lon2"],
+          "returns": "number",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "GET (Search Professionals API)",
+          "file": "src/app/api/search/professionals/route.ts",
+          "params": ["q", "city", "state", "specialty", "fallback"],
+          "returns": "NextResponse",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "ProfessionalSearchResult",
+          "fields": [
+            { "name": "id", "type": "string", "required": true },
+            { "name": "coordinates", "type": "number[]", "required": true },
+            { "name": "verified", "type": "boolean", "required": true }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Lógica de fallback geoespacial em 5 níveis para evitar busca vazia",
+          "location": "src/app/api/search/professionals/route.ts:235",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Algoritmo de dispersão de marcadores para evitar sobreposição no mapa",
+          "location": "src/app/api/search/professionals/route.ts:432",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["prisma", "nominatim", "maplibre", "lucide-react"],
+      "algorithms": [
+        {
+          "name": "Marker Spreading (Golden Angle)",
+          "description": "Distribuição em espiral de marcadores com a mesma coordenada de cidade",
+          "confidence": "confirmed"
+        }
+      ],
+      "complexity": "high"
+    },
+    {
+      "name": "checkout-planos",
+      "path": "src/app/checkout",
+      "purpose": "Processamento de pagamentos, assinaturas e webhooks do Stripe",
+      "primary_files": [
+        "src/app/checkout/page.tsx",
+        "src/app/api/checkout/route.ts",
+        "src/app/api/webhooks/stripe/route.ts"
+      ],
+      "functions": [
+        {
+          "name": "POST (Checkout API)",
+          "file": "src/app/api/checkout/route.ts",
+          "params": ["userId", "planId", "billingCycle"],
+          "returns": "NextResponse (Stripe Session URL)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "POST (Stripe Webhook)",
+          "file": "src/app/api/webhooks/stripe/route.ts",
+          "params": ["Stripe.Event"],
+          "returns": "NextResponse",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "Plan",
+          "fields": [
+            { "name": "id", "type": "string", "required": true },
+            { "name": "name", "type": "string", "required": true },
+            { "name": "price", "type": "decimal", "required": true }
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "Subscription",
+          "fields": [
+            { "name": "userId", "type": "string", "required": true },
+            { "name": "status", "type": "enum", "required": true },
+            { "name": "stripeSubscriptionId", "type": "string", "required": true }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Descontos automáticos aplicados no backend para planos semestrais (10%), anuais (20%) e bianuais (25%) em áreas não especializadas",
+          "location": "src/app/api/checkout/route.ts:81",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Upsert idempotente no Webhook para evitar múltiplas ativações em requisições repetidas do Stripe",
+          "location": "src/app/api/webhooks/stripe/route.ts:70",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["stripe", "prisma"],
+      "algorithms": [],
+      "complexity": "high"
+    },
+    {
+      "name": "dashboard-profissional-empresa",
+      "path": "src/app/(profissional|empresa)/dashboard",
+      "purpose": "Painel de controle principal para usuários logados",
+      "primary_files": [
+        "src/app/profissional/dashboard/page.tsx",
+        "src/app/empresa/dashboard/page.tsx",
+        "src/app/api/profissional/notifications/route.ts"
+      ],
+      "functions": [
+        {
+          "name": "GET (Notifications API)",
+          "file": "src/app/api/profissional/notifications/route.ts",
+          "params": [],
+          "returns": "NextResponse (Array combinado de Leads e Propostas)",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "ServiceRequest",
+          "fields": [
+            { "name": "id", "type": "string", "required": true },
+            { "name": "clientRazao", "type": "string", "required": true }
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "Proposal",
+          "fields": [
+            { "name": "id", "type": "string", "required": true },
+            { "name": "status", "type": "string", "required": true }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Leads (ContactRequests) e Orçamentos respondidos (Proposals) são combinados no mesmo array de notificações no backend",
+          "location": "src/app/api/profissional/notifications/route.ts:59",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Progresso de perfil da empresa é calculado via Frontend com base na presença de CNPJ, Telefone e Endereço",
+          "location": "src/app/empresa/dashboard/page.tsx:624",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["next/dynamic", "lucide-react", "prisma"],
+      "algorithms": ["viacep integration", "lazy loading components"],
+      "complexity": "medium"
+    },
+    {
+      "name": "proposals",
+      "path": "src/app/proposal",
+      "purpose": "Formalização de orçamentos e coleta de resposta do cliente via Magic Link",
+      "primary_files": [
+        "src/app/proposal/[token]/ProposalClient.tsx",
+        "src/app/api/proposals/send/route.ts",
+        "src/app/api/proposals/respond/route.ts"
+      ],
+      "functions": [
+        {
+          "name": "POST (Send Proposal)",
+          "file": "src/app/api/proposals/send/route.ts",
+          "params": ["serviceRequestId", "clientEmail", "valor", "servicos"],
+          "returns": "NextResponse (Proposal UUID Token)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "POST (Respond Proposal)",
+          "file": "src/app/api/proposals/respond/route.ts",
+          "params": ["token", "action", "message"],
+          "returns": "NextResponse (Updated Proposal)",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "Proposal",
+          "fields": [
+            { "name": "token", "type": "string (UUID)", "required": true },
+            { "name": "status", "type": "enum (enviada, aceita, recusada, expirada)", "required": true }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Ao aceitar uma proposta, o ServiceRequest atrelado (caso exista) deve ser marcado como 'aceita' automaticamente",
+          "location": "src/app/api/proposals/respond/route.ts:58",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Propostas possuem Magic Link isolado para acesso sem login por parte do cliente final",
+          "location": "src/app/proposal/[token]/ProposalClient.tsx:22",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["nodemailer", "sms-provider"],
+      "algorithms": [],
+      "complexity": "medium"
+    },
+    {
+      "name": "mega_service-python",
+      "path": "mega_service",
+      "purpose": "Microsserviço de offloading para upload de arquivos pesados via MEGA.nz",
+      "primary_files": [
+        "mega_service/main.py"
+      ],
+      "functions": [
+        {
+          "name": "POST /api/enviar-solicitacao",
+          "file": "mega_service/main.py",
+          "params": ["nome", "telefone", "email_prof", "telefone_prof", "arquivo"],
+          "returns": "JSON (Status imediato)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "processar_lead_completo",
+          "file": "mega_service/main.py",
+          "params": ["email_prof", "telefone_prof", "dados_cliente", "caminho_arquivo_temporario"],
+          "returns": "None (Roda em background)",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [],
+      "business_rules": [
+        {
+          "description": "Retorna sucesso imediatamente para o cliente sem esperar o término do upload",
+          "location": "mega_service/main.py:97",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Limpa arquivos temporários do servidor após o upload na nuvem",
+          "location": "mega_service/main.py:40",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["fastapi", "mega.py", "python-multipart"],
+      "algorithms": ["Offloading BackgroundTasks"],
+      "complexity": "low"
+    },
+    {
+      "name": "rag-ai",
+      "path": "src/app/api/rag",
+      "purpose": "Retrieval-Augmented Generation para consulta de documentos via LLM",
+      "primary_files": [
+        "src/app/api/rag/ask/route.ts",
+        "src/app/api/rag/ingest/route.ts",
+        "src/lib/rag/retriever.ts"
+      ],
+      "functions": [
+        {
+          "name": "POST /api/rag/ask",
+          "file": "src/app/api/rag/ask/route.ts",
+          "params": ["messages", "collection"],
+          "returns": "Stream (Vercel AI SDK)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "POST /api/rag/ingest",
+          "file": "src/app/api/rag/ingest/route.ts",
+          "params": ["file", "collection", "uploadedBy"],
+          "returns": "JSON (JobId)",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "rag_documents",
+          "fields": [
+            { "name": "id", "type": "string", "required": true },
+            { "name": "status", "type": "string", "required": true }
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "rag_chunks",
+          "fields": [
+            { "name": "id", "type": "string", "required": true },
+            { "name": "embedding", "type": "vector", "required": true }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Limita 30 requisições de chat por minuto por IP para evitar custos não previstos",
+          "location": "src/app/api/rag/ask/route.ts:19",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Processamento de extração e vetorização de PDF é assíncrono para evitar timeout no Vercel",
+          "location": "src/app/api/rag/ingest/route.ts:125",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["@ai-sdk/groq", "ai", "bullmq", "pgvector", "pdf2json"],
+      "algorithms": ["Cosine Distance Similarity", "Rate Limiter", "Timeout Handling"],
+      "complexity": "high"
+    },
+    {
+      "name": "notifications-worker",
+      "path": "src/lib/queue",
+      "purpose": "Consumidor da fila Redis para processar jobs pesados em background",
+      "primary_files": [
+        "src/workers/document-processor.ts",
+        "src/lib/queue/worker.ts",
+        "src/lib/queue/document-queue.ts"
+      ],
+      "functions": [
+        {
+          "name": "processDocument",
+          "file": "src/lib/queue/worker.ts",
+          "params": ["job"],
+          "returns": "Promise<{success, documentId, chunksCreated}>",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [],
+      "business_rules": [
+        {
+          "description": "Processa embeddings em lotes (batchSize: 30) para evitar limite de requisições da API de LLM",
+          "location": "src/lib/queue/worker.ts:32",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Reporta o progresso de 10 a 100 ao Redis baseado na contagem de lotes executados",
+          "location": "src/lib/queue/worker.ts:63",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["bull", "redis", "pgvector"],
+      "algorithms": ["Batch Processing", "Graceful Shutdown"],
+      "complexity": "medium"
+    }
+  ]
+}

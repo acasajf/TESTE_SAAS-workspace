@@ -1,0 +1,26 @@
+# O app tem repositório próprio: github.com/acasajf/TESTE_SAAS
+sst-finder/
+
+# Dependências e ambientes
+node_modules/
+.venv/
+__pycache__/
+
+# Diretórios de trabalho temporários do Claude Code
+tmpclaude-*
+
+# Kit de ferramenta baixado, reconstruível
+.temp_ag_kit/
+
+# Logs e artefatos
+*.log
+*.tgz
+*.zip
+
+# Segredos — nunca versionar
+.env
+.env.*
+!.env.example
+
+# Contem credenciais Twilio em texto plano — barrado pelo secret scanning do GitHub
+whatsapp_twilio.py

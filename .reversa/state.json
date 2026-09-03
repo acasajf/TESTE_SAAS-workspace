@@ -1,0 +1,141 @@
+{
+  "version": "1.2.14",
+  "project": "TESTE_SASS",
+  "user_name": "SST Finder",
+  "chat_language": "pt-br",
+  "doc_language": "portugues",
+  "answer_mode": "chat",
+  "doc_level": "detalhado",
+  "output_folder": "_reversa_sdd",
+  "phase": "concluido",
+  "completed": [
+    "reconhecimento",
+    "admin",
+    "auth",
+    "buscar-finder",
+    "checkout-planos",
+    "dashboard-profissional-empresa",
+    "proposals",
+    "mega_service-python",
+    "rag-ai",
+    "notifications-worker",
+    "interpretacao",
+    "geracao",
+    "revisao"
+  ],
+  "pending": [],
+  "checkpoints": {
+    "reconhecimento": {
+      "status": "success",
+      "timestamp": "2026-05-02T12:30:00Z",
+      "agent": "reversa-scout",
+      "summary": "Mapeamento concluído. 9 módulos identificados. Next.js, Prisma, Stripe e Python detectados."
+    },
+    "escavacao-admin": {
+      "status": "success",
+      "timestamp": "2026-05-02T12:35:00Z",
+      "agent": "reversa-archaeologist",
+      "summary": "Módulo Admin analisado. Gestão de usuários (real) e financeiro (mock) documentados. 1 entidade, 2 funções principais e 3 fluxogramas gerados."
+    },
+    "escavacao-auth": {
+      "status": "success",
+      "timestamp": "2026-05-02T12:45:00Z",
+      "agent": "reversa-archaeologist",
+      "summary": "Módulo Auth analisado. NextAuth v5 com Credentials. Fluxo de registro profissional de 5 etapas documentado com limites de plano."
+    },
+    "escavacao-buscar-finder": {
+      "status": "success",
+      "timestamp": "2026-05-02T13:10:00Z",
+      "agent": "reversa-archaeologist",
+      "summary": "Módulo Buscar-Finder analisado. Motor de busca multi-nível (fallback) e algoritmo de dispersão de marcadores documentados."
+    },
+    "escavacao-checkout": {
+      "status": "success",
+      "timestamp": "2026-05-02T13:21:00Z",
+      "agent": "reversa-archaeologist",
+      "summary": "Módulo Checkout analisado. Precificação dinâmica, descontos hardcoded na API e webhook idempotente do Stripe mapeados."
+    },
+    "escavacao-dashboards": {
+      "status": "success",
+      "timestamp": "2026-05-02T13:25:00Z",
+      "agent": "reversa-archaeologist",
+      "summary": "Módulo Dashboards analisado. Client-side rendering extensivo, sistema híbrido de estado e motor de notificações integrado (Leads + Propostas) documentados."
+    },
+    "escavacao-proposals": {
+      "status": "success",
+      "timestamp": "2026-05-02T13:30:00Z",
+      "agent": "reversa-archaeologist",
+      "summary": "Módulo Proposals analisado. Fluxo de aprovação pública via Magic Link e sincronização com ServiceRequest documentados."
+    },
+    "escavacao-mega-service": {
+      "status": "success",
+      "timestamp": "2026-05-02T13:38:00Z",
+      "agent": "reversa-archaeologist",
+      "summary": "Módulo Mega Service (Python) analisado. Offloading de upload de arquivos pesados via FastAPI BackgroundTasks com integração ao MEGA.nz."
+    },
+    "escavacao-rag-ai": {
+      "status": "success",
+      "timestamp": "2026-05-02T13:41:00Z",
+      "agent": "reversa-archaeologist",
+      "summary": "Módulo RAG AI analisado. Ingestão via fila Redis, extração resiliente de PDFs e consultas em streaming usando Groq e pgvector documentados."
+    },
+    "escavacao-notifications-worker": {
+      "status": "success",
+      "timestamp": "2026-05-02T13:45:00Z",
+      "agent": "reversa-archaeologist",
+      "summary": "Módulo Worker analisado. Execução standalone em Node.js com BullMQ. Processamento em lote de embeddings e injeção assíncrona no PostgreSQL."
+    }
+  },
+  "engines": [
+    "claude-code",
+    "opencode"
+  ],
+  "agents": [
+    "reversa",
+    "reversa-scout",
+    "reversa-archaeologist",
+    "reversa-detective",
+    "reversa-architect",
+    "reversa-writer",
+    "reversa-reviewer",
+    "reversa-visor",
+    "reversa-data-master",
+    "reversa-design-system",
+    "reversa-agents-help",
+    "reversa-reconstructor"
+  ],
+  "created_files": [
+    ".claude\\skills\\reversa",
+    ".agents\\skills\\reversa",
+    ".claude\\skills\\reversa-scout",
+    ".agents\\skills\\reversa-scout",
+    ".claude\\skills\\reversa-archaeologist",
+    ".agents\\skills\\reversa-archaeologist",
+    ".claude\\skills\\reversa-detective",
+    ".agents\\skills\\reversa-detective",
+    ".claude\\skills\\reversa-architect",
+    ".agents\\skills\\reversa-architect",
+    ".claude\\skills\\reversa-writer",
+    ".agents\\skills\\reversa-writer",
+    ".claude\\skills\\reversa-reviewer",
+    ".agents\\skills\\reversa-reviewer",
+    ".claude\\skills\\reversa-visor",
+    ".agents\\skills\\reversa-visor",
+    ".claude\\skills\\reversa-data-master",
+    ".agents\\skills\\reversa-data-master",
+    ".claude\\skills\\reversa-design-system",
+    ".agents\\skills\\reversa-design-system",
+    ".claude\\skills\\reversa-agents-help",
+    ".agents\\skills\\reversa-agents-help",
+    ".claude\\skills\\reversa-reconstructor",
+    ".agents\\skills\\reversa-reconstructor",
+    "CLAUDE.md",
+    "AGENTS.md",
+    ".reversa\\state.json",
+    ".reversa\\config.toml",
+    ".reversa\\config.user.toml",
+    ".reversa\\plan.md",
+    ".reversa\\version",
+    ".reversa\\_config\\manifest.yaml"
+  ]
+}

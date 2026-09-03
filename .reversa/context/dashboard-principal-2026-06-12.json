@@ -1,0 +1,25 @@
+{
+  "analysis": "dashboard-principal",
+  "date": "2026-06-12",
+  "route": "/dashboard",
+  "canonical_route": "/profissional/dashboard",
+  "component": "sst-finder/src/components/dashboard/dashboard-principal.tsx",
+  "api": "sst-finder/src/app/api/profissional/dashboard/route.ts",
+  "confidence": "confirmed_from_code",
+  "summary": {
+    "purpose": "Consolidar negocios, propostas, OS, alertas, proximas acoes, indicadores SST, indicadores ambientais e documentos para o profissional autenticado.",
+    "data_source": "Prisma via GET /api/profissional/dashboard",
+    "ui_state": ["loading", "error", "empty-partial", "success"],
+    "main_risks": [
+      "Testes E2E parecem desatualizados em relacao a tela atual.",
+      "Status comerciais e operacionais estao hardcoded.",
+      "Classificacao SST/ambiental depende de busca textual por termos.",
+      "Valores financeiros sao strings e dependem de parser.",
+      "Falha em uma consulta do Promise.all derruba todo o endpoint."
+    ]
+  },
+  "artifacts": [
+    "_reversa_sdd/dashboard-principal-analysis-2026-06-12.md",
+    "_reversa_sdd/flowcharts/dashboard-principal-2026-06-12.md"
+  ]
+}

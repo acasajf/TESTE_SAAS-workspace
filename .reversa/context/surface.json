@@ -1,0 +1,58 @@
+{
+  "generated_at": "2026-05-02T12:28:00Z",
+  "project_root": "f:/ULTIMO_BKP_01052026/TESTE_SASS/sst-finder",
+  "languages": [
+    { "name": "TypeScript", "extensions": [".ts", ".tsx"], "file_count": 363 },
+    { "name": "Python", "extensions": [".py"], "file_count": 3787 },
+    { "name": "JavaScript", "extensions": [".js", ".cjs", ".mjs"], "file_count": 47 }
+  ],
+  "primary_language": "TypeScript",
+  "frameworks": [
+    { "name": "Next.js", "version": "15.0.0", "source": "package.json" },
+    { "name": "React", "version": "19.2.0", "source": "package.json" },
+    { "name": "Prisma", "version": "5.10.0", "source": "package.json" },
+    { "name": "Tailwind CSS", "version": "3.4.19", "source": "package.json" },
+    { "name": "Stripe", "version": "14.25.0", "source": "package.json" },
+    { "name": "FastAPI", "version": "unknown", "source": "mega_service" }
+  ],
+  "package_manager": "npm",
+  "entry_points": [
+    { "path": "src/app/layout.tsx", "type": "app_layout" },
+    { "path": "src/app/page.tsx", "type": "app_entry" },
+    { "path": "src/workers/document-processor.ts", "type": "worker_entry" },
+    { "path": "mega_service/main.py", "type": "python_service_entry" }
+  ],
+  "config_files": [
+    "next.config.ts",
+    "tailwind.config.cjs",
+    "tsconfig.json",
+    "prisma/schema.prisma",
+    ".env.example",
+    "eslint.config.mjs"
+  ],
+  "ci_cd": [
+    ".github/workflows/"
+  ],
+  "docker": {
+    "dockerfile": "Dockerfile",
+    "compose": "docker-compose.yml"
+  },
+  "database_hints": [
+    { "path": "prisma/schema.prisma", "type": "prisma_schema" },
+    { "path": "prisma/migrations/", "type": "migrations_dir" }
+  ],
+  "test_framework": "Vitest / Playwright",
+  "test_file_count": 10,
+  "modules": [
+    "admin",
+    "auth",
+    "buscar-finder",
+    "checkout-planos",
+    "dashboard-profissional-empresa",
+    "proposals",
+    "mega_service-python",
+    "rag-ai",
+    "notifications-worker"
+  ],
+  "total_files": 4500
+}

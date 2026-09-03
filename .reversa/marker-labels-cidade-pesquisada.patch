@@ -1,0 +1,111 @@
+*** Proposta de implementacao — nao aplicada ao codigo legado ***
+
+diff --git a/sst-finder/src/components/search/leaflet-uber-map.tsx b/sst-finder/src/components/search/leaflet-uber-map.tsx
+--- a/sst-finder/src/components/search/leaflet-uber-map.tsx
++++ b/sst-finder/src/components/search/leaflet-uber-map.tsx
+@@
+ interface LeafletUberMapProps {
+   center: [number, number]
+   zoom: number
+   professionals: Professional[]
+   searchCenter?: [number, number] | null
++  labelCity?: string | null
+   onMarkerClick: (pro: Professional) => void
+   selectedProId?: string | null
+ }
++
++function normalizeCity(value: string) {
++  return value
++    .normalize('NFD')
++    .replace(/[\u0300-\u036f]/g, '')
++    .toLowerCase()
++    .split(/[,(]/)[0]
++    .trim()
++}
+@@
+ export default function LeafletUberMap({
+   center,
+   zoom,
+   professionals,
+   searchCenter = null,
++  labelCity = null,
+   onMarkerClick,
+   selectedProId = null,
+ }: LeafletUberMapProps) {
+@@
+         const category = resolveCategory(pro)
+         const isSelected = pro.id === selectedProId
++        const showLabel =
++          Boolean(labelCity?.trim()) &&
++          normalizeCity(pro.location) === normalizeCity(labelCity!)
++        const label = showLabel
++          ? `<span class="sst-marker-label">${pro.name}</span>`
++          : ''
+@@
+             <div class="sst-marker-wrap">
+               <div class="sst-pushpin${isSelected ? ' is-selected' : ''}">
+                 <span class="sst-pushpin-head"></span>
+                 <span class="sst-pushpin-needle"></span>
+               </div>
++              ${label}
+             </div>
+@@
+             <div class="sst-marker-wrap">
+               <div class="sst-marker-pin is-${category}${isSelected ? ' is-selected' : ''}">
+                 <span class="sst-marker-icon">${CATEGORY_ICON[category]}</span>
+               </div>
++              ${label}
+             </div>
+@@
+-  }, [professionals, onMarkerClick, selectedProId])
++  }, [professionals, labelCity, onMarkerClick, selectedProId])
+
+diff --git a/sst-finder/src/components/search/uber-map-search.tsx b/sst-finder/src/components/search/uber-map-search.tsx
+--- a/sst-finder/src/components/search/uber-map-search.tsx
++++ b/sst-finder/src/components/search/uber-map-search.tsx
+@@
+             professionals={filteredProfessionals}
+             searchCenter={searchCoordinates ? [searchCoordinates.lat, searchCoordinates.lon] : null}
++            labelCity={hasSearched && locationTerm.trim() ? locationTerm : null}
+             onMarkerClick={(pro) => setSelectedPro(pro)}
+             selectedProId={selectedPro?.id ?? null}
+
+diff --git a/sst-finder/src/app/globals.css b/sst-finder/src/app/globals.css
+--- a/sst-finder/src/app/globals.css
++++ b/sst-finder/src/app/globals.css
+@@
+ .sst-marker-wrap {
+   position: relative;
+   width: 42px;
+   height: 52px;
+   cursor: pointer;
+ }
++
++.sst-marker-label {
++  position: absolute;
++  left: 44px;
++  top: 8px;
++  z-index: -1;
++  min-width: max-content;
++  max-width: 180px;
++  overflow: hidden;
++  padding: 6px 10px 6px 12px;
++  border: 1px solid rgba(15, 117, 111, 0.28);
++  border-radius: 4px;
++  background: rgba(255, 255, 255, 0.96);
++  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
++  color: #172033;
++  font-size: 12px;
++  font-weight: 700;
++  line-height: 1.2;
++  text-overflow: ellipsis;
++  white-space: nowrap;
++  pointer-events: none;
++}
++
++@media (max-width: 640px) {
++  .sst-marker-label {
++    max-width: 130px;
++    font-size: 11px;
++  }
++}

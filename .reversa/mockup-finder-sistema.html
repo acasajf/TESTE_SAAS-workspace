@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prévia - Finder de Profissionais</title>
+  <style>
+    :root {
+      --primary: #0f756f;
+      --primary-bright: #14b8a6;
+      --background: #0f172a;
+      --foreground: #f8fafc;
+      --card: #1d222a;
+      --muted: #1e293b;
+      --muted-foreground: #94a3b8;
+      --border: #1e293b;
+      --warning: #facc15;
+      --info: #0ea5e9;
+      --success: #10b981;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--background);
+      color: var(--foreground);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    .glass-card {
+      backdrop-filter: blur(24px);
+      background-color: rgba(15, 23, 42, 0.68);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, .22);
+    }
+
+    .app {
+      height: 100vh;
+      display: grid;
+      grid-template-rows: 76px 1fr;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 0 28px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      background: rgba(8, 13, 26, .92);
+      backdrop-filter: blur(22px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 900;
+      font-size: 18px;
+      white-space: nowrap;
+    }
+
+    .logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-bright));
+      display: grid;
+      place-items: center;
+      box-shadow: 0 18px 40px rgba(15,117,111,.28);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted-foreground);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .top-actions span {
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.035);
+      border: 1px solid rgba(255,255,255,.06);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: 420px minmax(0, 1fr) 330px;
+      min-height: 0;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      border-right: 1px solid rgba(255,255,255,.06);
+      background: rgba(10, 16, 31, .92);
+    }
+
+    .sidebar-head {
+      padding: 22px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      line-height: 1.05;
+      letter-spacing: 0;
+      color: #fff;
+    }
+
+    .sidebar-head p {
+      margin: 0;
+      color: var(--muted-foreground);
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .search-panel {
+      padding: 18px 22px;
+      display: grid;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+
+    label {
+      display: grid;
+      gap: 7px;
+      color: #cbd5e1;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .field {
+      height: 46px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 13px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px;
+      background: rgba(2, 6, 23, .52);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      padding: 8px 10px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 999px;
+      color: #cbd5e1;
+      background: rgba(255,255,255,.035);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .chip.active {
+      border-color: rgba(20,184,166,.35);
+      background: rgba(15,117,111,.20);
+      color: #5eead4;
+    }
+
+    .primary {
+      height: 46px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 950;
+      box-shadow: 0 16px 30px rgba(15,117,111,.22);
+    }
+
+    .results {
+      min-height: 0;
+      overflow: auto;
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .result-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted-foreground);
+      font-size: 13px;
+      margin-bottom: 2px;
+    }
+
+    .result-top b {
+      color: #fff;
+      font-size: 15px;
+    }
+
+    .card {
+      border-radius: 16px;
+      padding: 15px;
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .card.active {
+      border-color: rgba(20,184,166,.55);
+      box-shadow: 0 0 28px rgba(15,117,111,.14);
+    }
+
+    .avatar {
+      height: 54px;
+      width: 54px;
+      border-radius: 999px;
+      background: rgba(15,117,111,.22);
+      color: #5eead4;
+      display: grid;
+      place-items: center;
+      font-weight: 950;
+      border: 1px solid rgba(20,184,166,.28);
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 16px;
+      color: #fff;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 5px;
+      color: #94a3b8;
+      font-size: 12px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      padding: 4px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(15,117,111,.30);
+      background: rgba(15,117,111,.14);
+      color: #5eead4;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .map {
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        radial-gradient(circle at 50% 48%, rgba(15,117,111,.28), transparent 32%),
+        #0b1325;
+      background-size: 44px 44px, 44px 44px, auto, auto;
+    }
+
+    .route {
+      position: absolute;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(20,184,166,.28), transparent);
+      transform-origin: left center;
+    }
+
+    .r1 { left: 14%; top: 39%; width: 58%; transform: rotate(16deg); }
+    .r2 { left: 21%; top: 65%; width: 52%; transform: rotate(-24deg); }
+    .r3 { left: 38%; top: 18%; width: 34%; transform: rotate(64deg); }
+    .r4 { left: 8%; top: 73%; width: 70%; transform: rotate(4deg); }
+
+    .radius {
+      position: absolute;
+      left: 34%;
+      top: 30%;
+      width: 340px;
+      height: 340px;
+      border-radius: 999px;
+      border: 1px solid rgba(20,184,166,.38);
+      background: rgba(15,117,111,.06);
+    }
+
+    .radius.small {
+      left: calc(34% + 82px);
+      top: calc(30% + 82px);
+      width: 176px;
+      height: 176px;
+      border-color: rgba(20,184,166,.48);
+      background: rgba(15,117,111,.08);
+    }
+
+    .center-dot {
+      position: absolute;
+      left: calc(34% + 166px);
+      top: calc(30% + 166px);
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--warning);
+      box-shadow: 0 0 24px rgba(250,204,21,.7);
+    }
+
+    .pin {
+      position: absolute;
+      z-index: 4;
+      display: grid;
+      gap: 6px;
+      justify-items: center;
+      transform: translate(-50%, -50%);
+    }
+
+    .pin-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      background: var(--primary-bright);
+      border: 3px solid #fff;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 18px 36px rgba(0,0,0,.34);
+    }
+
+    .pin-icon span {
+      transform: rotate(45deg);
+      color: #05201d;
+      font-size: 10px;
+      font-weight: 950;
+    }
+
+    .pin-label {
+      border-radius: 999px;
+      padding: 5px 8px;
+      background: rgba(15,23,42,.86);
+      border: 1px solid rgba(255,255,255,.10);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .p1 { left: 48%; top: 47%; }
+    .p2 { left: 61%; top: 56%; }
+    .p2 .pin-icon { background: var(--info); }
+    .p3 { left: 45%; top: 69%; }
+    .p3 .pin-icon { background: var(--success); }
+    .p4 { left: 70%; top: 36%; }
+    .p4 .pin-icon { background: var(--warning); }
+    .p5 { left: 34%; top: 52%; }
+
+    .map-toolbar {
+      position: absolute;
+      z-index: 6;
+      left: 18px;
+      top: 18px;
+      right: 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .map-search {
+      min-width: 310px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      border-radius: 14px;
+      background: rgba(15,23,42,.86);
+      border: 1px solid rgba(255,255,255,.08);
+      color: #fff;
+      font-weight: 800;
+      box-shadow: 0 18px 36px rgba(0,0,0,.22);
+    }
+
+    .map-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .square {
+      height: 42px;
+      min-width: 42px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(15,23,42,.86);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 950;
+    }
+
+    .legend {
+      position: absolute;
+      z-index: 6;
+      left: 18px;
+      bottom: 18px;
+      display: flex;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(15,23,42,.86);
+      border: 1px solid rgba(255,255,255,.08);
+      color: #cbd5e1;
+      font-size: 12px;
+      font-weight: 750;
+      box-shadow: 0 18px 36px rgba(0,0,0,.22);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      display: inline-block;
+      margin-right: 6px;
+    }
+
+    .details {
+      min-height: 0;
+      overflow: auto;
+      border-left: 1px solid rgba(255,255,255,.06);
+      background: rgba(10, 16, 31, .92);
+      padding: 18px;
+    }
+
+    .profile {
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .profile-cover {
+      height: 92px;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(250,204,21,.20), transparent 30%),
+        linear-gradient(135deg, rgba(15,117,111,.45), rgba(20,184,166,.10));
+      margin-bottom: -28px;
+    }
+
+    .profile-avatar {
+      margin-left: 18px;
+      width: 68px;
+      height: 68px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: #10233a;
+      border: 3px solid rgba(15,23,42,.95);
+      color: #5eead4;
+      font-weight: 950;
+      font-size: 20px;
+    }
+
+    .profile h2 {
+      margin: 14px 0 4px;
+      font-size: 22px;
+      color: #fff;
+    }
+
+    .profile p {
+      margin: 0;
+      color: var(--muted-foreground);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 18px 0;
+    }
+
+    .stat {
+      padding: 12px 8px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.06);
+      text-align: center;
+    }
+
+    .stat b {
+      display: block;
+      font-size: 18px;
+      color: #fff;
+    }
+
+    .stat span {
+      color: var(--muted-foreground);
+      font-size: 11px;
+    }
+
+    .section-title {
+      margin: 22px 0 10px;
+      color: #facc15;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .check-list {
+      display: grid;
+      gap: 10px;
+      color: #cbd5e1;
+      font-size: 13px;
+    }
+
+    .profile-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .outline {
+      height: 44px;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 12px;
+      background: rgba(255,255,255,.04);
+      color: #fff;
+      font-weight: 850;
+    }
+
+    @media (max-width: 1100px) {
+      body { overflow: auto; }
+      .app { height: auto; min-height: 100vh; }
+      main { grid-template-columns: 1fr; }
+      .sidebar, .details { border: 0; }
+      .map { height: 650px; }
+      .details { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="brand"><div class="logo">⌖</div> SST Finder</div>
+      <div class="top-actions">
+        <span>Finder de Profissionais</span>
+        <span>Empresa logada</span>
+        <span>Plano Completo</span>
+      </div>
+    </header>
+
+    <main>
+      <aside class="sidebar">
+        <div class="sidebar-head">
+          <h1>Finder de Profissionais</h1>
+          <p>Busque no mapa, compare perfis verificados e envie sua necessidade para o profissional ideal.</p>
+        </div>
+
+        <div class="search-panel">
+          <label>Localização
+            <div class="field">📍 São Paulo (SP)</div>
+          </label>
+          <label>Serviço ou especialidade
+            <div class="field">🔎 PGR, LTCAT, NR-12...</div>
+          </label>
+          <div class="filter-row">
+            <span class="chip active">Verificados</span>
+            <span class="chip">Até 30 km</span>
+            <span class="chip">Disponível</span>
+            <span class="chip">4+ estrelas</span>
+          </div>
+          <button class="primary">Atualizar busca</button>
+        </div>
+
+        <div class="results">
+          <div class="result-top"><b>12 encontrados</b><span>Ordenar: distância</span></div>
+          <article class="card glass-card active">
+            <div class="avatar">MS</div>
+            <div>
+              <h2>Mariana Souza</h2>
+              <div class="meta"><span>Eng. Segurança</span><span>8 km</span><span>★ 4.9</span></div>
+              <div class="tags"><span class="tag">PGR</span><span class="tag">LTCAT</span><span class="tag">NR-12</span></div>
+            </div>
+          </article>
+          <article class="card glass-card">
+            <div class="avatar">RA</div>
+            <div>
+              <h2>Rafael Alves</h2>
+              <div class="meta"><span>Téc. Segurança</span><span>18 km</span><span>★ 4.8</span></div>
+              <div class="tags"><span class="tag">PCMSO</span><span class="tag">Treinamentos</span></div>
+            </div>
+          </article>
+          <article class="card glass-card">
+            <div class="avatar">CL</div>
+            <div>
+              <h2>Camila Lima</h2>
+              <div class="meta"><span>Ambiental</span><span>24 km</span><span>★ 4.7</span></div>
+              <div class="tags"><span class="tag">Licenciamento</span><span class="tag">ISO 14001</span></div>
+            </div>
+          </article>
+          <article class="card glass-card">
+            <div class="avatar">PO</div>
+            <div>
+              <h2>Paulo Oliveira</h2>
+              <div class="meta"><span>Bombeiro Civil</span><span>28 km</span><span>★ 4.8</span></div>
+              <div class="tags"><span class="tag">AVCB</span><span class="tag">Brigada</span></div>
+            </div>
+          </article>
+        </div>
+      </aside>
+
+      <section class="map">
+        <div class="route r1"></div>
+        <div class="route r2"></div>
+        <div class="route r3"></div>
+        <div class="route r4"></div>
+        <div class="radius"></div>
+        <div class="radius small"></div>
+        <div class="center-dot"></div>
+
+        <div class="map-toolbar">
+          <div class="map-search">📍 São Paulo, SP · raio de 30 km</div>
+          <div class="map-actions"><div class="square">☰</div><div class="square">+</div><div class="square">−</div></div>
+        </div>
+
+        <div class="pin p1"><div class="pin-icon"><span>MS</span></div><div class="pin-label">Mariana · 8 km</div></div>
+        <div class="pin p2"><div class="pin-icon"><span>RA</span></div><div class="pin-label">Rafael · 18 km</div></div>
+        <div class="pin p3"><div class="pin-icon"><span>CL</span></div><div class="pin-label">Camila · 24 km</div></div>
+        <div class="pin p4"><div class="pin-icon"><span>PO</span></div><div class="pin-label">Paulo · 28 km</div></div>
+        <div class="pin p5"><div class="pin-icon"><span>+</span></div><div class="pin-label">Mais 8 perfis</div></div>
+
+        <div class="legend">
+          <span><i class="dot" style="background:var(--primary-bright)"></i>Verificado</span>
+          <span><i class="dot" style="background:var(--info)"></i>Disponível</span>
+          <span><i class="dot" style="background:var(--warning)"></i>Destaque</span>
+        </div>
+      </section>
+
+      <aside class="details">
+        <div class="profile glass-card">
+          <div class="profile-cover"></div>
+          <div class="profile-avatar">MS</div>
+          <h2>Mariana Souza</h2>
+          <p>Engenheira de Segurança do Trabalho em São Paulo, especializada em PGR, LTCAT e adequações NR-12.</p>
+
+          <div class="stats">
+            <div class="stat"><b>4.9</b><span>avaliação</span></div>
+            <div class="stat"><b>8 km</b><span>distância</span></div>
+            <div class="stat"><b>24h</b><span>resposta</span></div>
+          </div>
+
+          <div class="section-title">Especialidades</div>
+          <div class="tags"><span class="tag">PGR</span><span class="tag">LTCAT</span><span class="tag">NR-12</span><span class="tag">Auditoria</span></div>
+
+          <div class="section-title">Confiança</div>
+          <div class="check-list">
+            <span>✓ Documentação verificada</span>
+            <span>✓ Perfil completo</span>
+            <span>✓ Disponível esta semana</span>
+            <span>✓ Atende empresas em SP e região</span>
+          </div>
+
+          <div class="profile-actions">
+            <button class="primary">Solicitar contato</button>
+            <button class="outline">Ver perfil completo</button>
+            <button class="outline">Salvar nos favoritos</button>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mockup - Buscar Profissionais SST Finder</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7fa;
+      --surface: #ffffff;
+      --surface-soft: #eef4f6;
+      --line: #d9e2e7;
+      --text: #13212b;
+      --muted: #667888;
+      --teal: #0f9f8f;
+      --teal-dark: #08796e;
+      --amber: #b7791f;
+      --blue: #2563eb;
+      --green: #16803f;
+      --shadow: 0 18px 45px rgba(20, 39, 51, .10);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .topbar {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 850;
+      font-size: 18px;
+    }
+
+    .mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--teal), #7bdc78);
+    }
+
+    .nav {
+      display: flex;
+      gap: 26px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .nav strong { color: var(--teal-dark); }
+    .nav .button {
+      padding: 10px 15px;
+      border-radius: 8px;
+      background: #e9f7f5;
+      color: var(--teal-dark);
+    }
+
+    .page {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 34px 34px 56px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 28px;
+      align-items: end;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: #e9f7f5;
+      color: var(--teal-dark);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 14px 0 10px;
+      font-size: 46px;
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 710px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.55;
+    }
+
+    .trust {
+      display: grid;
+      grid-template-columns: repeat(3, 132px);
+      gap: 10px;
+    }
+
+    .trust div {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .trust b {
+      display: block;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .trust span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .search {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: 1.1fr 1.2fr auto auto;
+      gap: 12px;
+      align-items: end;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: grid;
+      gap: 7px;
+      color: #314554;
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .field {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfdfe;
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    .primary {
+      height: 48px;
+      border: 0;
+      border-radius: 8px;
+      padding: 0 22px;
+      background: var(--teal);
+      color: white;
+      font-weight: 850;
+      font-size: 14px;
+    }
+
+    .secondary {
+      height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0 16px;
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 750;
+    }
+
+    .quick {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 24px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: #2d4655;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .chip.active {
+      border-color: rgba(15,159,143,.35);
+      background: #e9f7f5;
+      color: var(--teal-dark);
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 500px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .results-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .results-head h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .results-head p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .sort {
+      padding: 9px 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: #395060;
+      font-size: 13px;
+      font-weight: 700;
+      background: #fbfdfe;
+    }
+
+    .list { display: grid; }
+
+    .pro {
+      display: grid;
+      grid-template-columns: 72px 1fr auto;
+      gap: 16px;
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+      align-items: start;
+    }
+
+    .pro:last-child { border-bottom: 0; }
+
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d9ebe8, #b9ded8);
+      display: grid;
+      place-items: center;
+      color: var(--teal-dark);
+      font-size: 22px;
+      font-weight: 850;
+      border: 1px solid rgba(15,159,143,.24);
+    }
+
+    .pro h3 {
+      margin: 0 0 4px;
+      font-size: 18px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .badge {
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      color: #395060;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .badge.ok {
+      background: #e9f7f5;
+      color: var(--teal-dark);
+    }
+
+    .side {
+      text-align: right;
+      min-width: 135px;
+    }
+
+    .rating {
+      color: var(--amber);
+      font-weight: 850;
+      margin-bottom: 8px;
+    }
+
+    .contact {
+      height: 38px;
+      padding: 0 13px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--teal);
+      color: white;
+      font-weight: 800;
+    }
+
+    .details {
+      height: 38px;
+      margin-top: 8px;
+      padding: 0 13px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      color: #344b5b;
+      font-weight: 750;
+    }
+
+    .map {
+      position: sticky;
+      top: 92px;
+      overflow: hidden;
+      height: 660px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(28, 74, 92, .07) 1px, transparent 1px),
+        linear-gradient(rgba(28, 74, 92, .07) 1px, transparent 1px),
+        #e7eef1;
+      background-size: 42px 42px;
+    }
+
+    .map:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 48% 42%, rgba(15,159,143,.13), transparent 28%),
+        radial-gradient(circle at 64% 64%, rgba(37,99,235,.10), transparent 23%);
+    }
+
+    .pin {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      background: var(--teal);
+      border: 3px solid white;
+      box-shadow: 0 8px 20px rgba(0,0,0,.16);
+    }
+
+    .pin:after {
+      content: "";
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: white;
+      left: 6px;
+      top: 6px;
+    }
+
+    .p1 { left: 45%; top: 34%; }
+    .p2 { left: 57%; top: 46%; background: var(--blue); }
+    .p3 { left: 36%; top: 55%; background: var(--green); }
+    .p4 { left: 68%; top: 30%; background: var(--amber); }
+    .p5 { left: 61%; top: 67%; }
+
+    .map-info {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,.93);
+      box-shadow: 0 12px 32px rgba(20, 39, 51, .14);
+    }
+
+    .map-info h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .map-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .map-stats div {
+      padding: 10px;
+      border-radius: 8px;
+      background: var(--surface-soft);
+    }
+
+    .map-stats b {
+      display: block;
+      font-size: 17px;
+    }
+
+    .map-stats span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 1050px) {
+      .topbar { padding: 0 20px; }
+      .nav { display: none; }
+      .page { padding: 24px 16px 40px; }
+      .hero, .content { grid-template-columns: 1fr; }
+      h1 { font-size: 36px; }
+      .trust { grid-template-columns: repeat(3, 1fr); }
+      .search { position: static; grid-template-columns: 1fr; }
+      .map { position: relative; top: 0; height: 420px; }
+      .pro { grid-template-columns: 60px 1fr; }
+      .avatar { width: 60px; height: 60px; }
+      .side { grid-column: 1 / -1; text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="mark"></span> SST Finder</div>
+    <nav class="nav">
+      <strong>Buscar profissionais</strong>
+      <span>Planos</span>
+      <span>Ajuda</span>
+      <span>Entrar</span>
+      <span class="button">Cadastrar profissional</span>
+    </nav>
+  </header>
+
+  <main class="page">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Profissionais verificados em todo o Brasil</div>
+        <h1>Encontre profissionais de SST e Meio Ambiente na sua região</h1>
+        <p class="lead">Busque por cidade, serviço ou especialidade. Compare perfis, avaliações e disponibilidade antes de solicitar contato.</p>
+      </div>
+      <div class="trust">
+        <div><b>850+</b><span>perfis cadastrados</span></div>
+        <div><b>27 UF</b><span>cobertura nacional</span></div>
+        <div><b>4.8</b><span>média de avaliação</span></div>
+      </div>
+    </section>
+
+    <section class="search">
+      <label>Localização
+        <div class="field">📍 São Paulo (SP)</div>
+      </label>
+      <label>Serviço ou especialidade
+        <div class="field">🔎 PGR, LTCAT, PCMSO, NR-12...</div>
+      </label>
+      <button class="primary">Buscar</button>
+      <button class="secondary">Filtros</button>
+    </section>
+
+    <div class="quick">
+      <span class="chip active">🦺 SST</span>
+      <span class="chip">🌱 Meio Ambiente</span>
+      <span class="chip">🔥 Bombeiro Civil</span>
+      <span class="chip">📋 Treinamentos</span>
+      <span class="chip">🥽 EPI</span>
+      <span class="chip">✓ Verificados</span>
+      <span class="chip">Hoje ou amanhã</span>
+    </div>
+
+    <section class="content">
+      <div class="panel">
+        <div class="results-head">
+          <div>
+            <h2>Profissionais próximos de São Paulo</h2>
+            <p>12 profissionais encontrados. Ordenados por relevância e distância.</p>
+          </div>
+          <div class="sort">Ordenar: Relevância</div>
+        </div>
+
+        <div class="list">
+          <article class="pro">
+            <div class="avatar">MS</div>
+            <div>
+              <h3>Mariana Souza</h3>
+              <div class="meta">
+                <span>Engenheira de Segurança</span>
+                <span>São Paulo, SP</span>
+                <span>8 km</span>
+              </div>
+              <div class="badges">
+                <span class="badge ok">Documentação verificada</span>
+                <span class="badge">PGR</span>
+                <span class="badge">LTCAT</span>
+                <span class="badge">NR-12</span>
+              </div>
+            </div>
+            <div class="side">
+              <div class="rating">★ 4.9</div>
+              <button class="contact">Solicitar contato</button>
+              <button class="details">Ver perfil</button>
+            </div>
+          </article>
+
+          <article class="pro">
+            <div class="avatar">RA</div>
+            <div>
+              <h3>Rafael Alves</h3>
+              <div class="meta">
+                <span>Técnico de Segurança</span>
+                <span>Guarulhos, SP</span>
+                <span>18 km</span>
+              </div>
+              <div class="badges">
+                <span class="badge ok">Perfil completo</span>
+                <span class="badge">Treinamentos</span>
+                <span class="badge">PCMSO</span>
+                <span class="badge">Auditoria</span>
+              </div>
+            </div>
+            <div class="side">
+              <div class="rating">★ 4.8</div>
+              <button class="contact">Solicitar contato</button>
+              <button class="details">Ver perfil</button>
+            </div>
+          </article>
+
+          <article class="pro">
+            <div class="avatar">CL</div>
+            <div>
+              <h3>Camila Lima</h3>
+              <div class="meta">
+                <span>Consultora Ambiental</span>
+                <span>Santo André, SP</span>
+                <span>24 km</span>
+              </div>
+              <div class="badges">
+                <span class="badge ok">Disponível esta semana</span>
+                <span class="badge">Licenciamento</span>
+                <span class="badge">ISO 14001</span>
+                <span class="badge">Resíduos</span>
+              </div>
+            </div>
+            <div class="side">
+              <div class="rating">★ 4.7</div>
+              <button class="contact">Solicitar contato</button>
+              <button class="details">Ver perfil</button>
+            </div>
+          </article>
+
+          <article class="pro">
+            <div class="avatar">PO</div>
+            <div>
+              <h3>Paulo Oliveira</h3>
+              <div class="meta">
+                <span>Bombeiro Civil</span>
+                <span>Osasco, SP</span>
+                <span>28 km</span>
+              </div>
+              <div class="badges">
+                <span class="badge ok">Atendimento rápido</span>
+                <span class="badge">Brigada</span>
+                <span class="badge">AVCB</span>
+                <span class="badge">Treinamento</span>
+              </div>
+            </div>
+            <div class="side">
+              <div class="rating">★ 4.8</div>
+              <button class="contact">Solicitar contato</button>
+              <button class="details">Ver perfil</button>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <aside class="map" aria-label="Mapa de profissionais">
+        <span class="pin p1"></span>
+        <span class="pin p2"></span>
+        <span class="pin p3"></span>
+        <span class="pin p4"></span>
+        <span class="pin p5"></span>
+        <div class="map-info">
+          <h3>Mapa de disponibilidade</h3>
+          <div class="map-stats">
+            <div><b>5</b><span>até 30 km</span></div>
+            <div><b>3</b><span>verificados</span></div>
+            <div><b>2</b><span>disponíveis hoje</span></div>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+</body>
+</html>
