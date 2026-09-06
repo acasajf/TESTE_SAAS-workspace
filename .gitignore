@@ -17,6 +17,12 @@ tmpclaude-*
 *.tgz
 *.zip
 
+# Runtime local do preview (.agent/scripts/auto_preview.py) — regenerado a cada start
+.agent/preview.pid
+
+# Configurações locais do Claude Code nesta máquina
+.claude/settings.local.json
+
 # Segredos — nunca versionar
 .env
 .env.*
