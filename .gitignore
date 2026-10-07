@@ -23,6 +23,11 @@ tmpclaude-*
 # Configurações locais do Claude Code nesta máquina
 .claude/settings.local.json
 
+# Skills instalados localmente — não precisam ser versionados
+.agents/skills/
+.claude/skills/
+skills-lock.json
+
 # Segredos — nunca versionar
 .env
 .env.*
